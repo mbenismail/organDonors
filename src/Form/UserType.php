@@ -2,8 +2,11 @@
 
 namespace App\Form;
 
+use App\Entity\Category;
+use App\Entity\Hospital;
 use App\Entity\User;
 use App\Form\DataTransformer\StringToArrayTransformer;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
@@ -19,6 +22,7 @@ class UserType extends AbstractType
         $builder
             ->add('email')
             ->add('username')
+
             ->add($builder->create('roles', ChoiceType::class, array(
                 'multiple' => false,
                 'choices' => array(
@@ -26,6 +30,10 @@ class UserType extends AbstractType
                     'ROLE_EMP' => 'ROLE_EMP',
                 )
             ))->addModelTransformer($transformer))
+            ->add('hospital' , EntityType::class , [
+                'class' => Hospital::class,
+                'choice_label' => 'Name_hosp',
+            ])
             ->add('plainPassword', RepeatedType::class, [
                 'type' => PasswordType::class,
                 'invalid_message' => 'The password fields must match.',
@@ -34,6 +42,7 @@ class UserType extends AbstractType
                 'required' =>false,
                 'second_options' => ['label' => 'Repeat Password'],
             ]);
+
     }
 
     public function configureOptions(OptionsResolver $resolver)

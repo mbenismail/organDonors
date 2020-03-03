@@ -36,5 +36,8 @@ security:
     access_control:
 
         - { path: ^/admin/users/, roles: [ROLE_ADMIN] }
+        - { path: ^/admin/hospital/, roles: [ROLE_ADMIN] }
         - { path: ^/admin/patients/, roles: [ROLE_ADMIN , ROLE_EMPL] }
+        - { path: ^/admin/patients/\d+/edit, roles: [ROLE_EMPL] }
+        - { path: ^/admin/patients/new, roles: [ROLE_EMPL] }
         # - { path: ^/profile, roles: ROLE_USER }

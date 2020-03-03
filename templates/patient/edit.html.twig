@@ -1,0 +1,10 @@
+{% extends 'admin/BaseAdmin.html.twig' %}
+
+{% block title %}Edit Patient{% endblock %}
+
+{% block body %}
+    <h1>Edit Patient</h1>
+
+    {{ include('patient/_form.html.twig', {'button_label': 'Update'}) }}
+
+{% endblock %}

@@ -2,6 +2,7 @@
 
 namespace App\DataFixtures;
 
+use App\Entity\Hospital;
 use App\Entity\User;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\Persistence\ObjectManager;
@@ -20,7 +21,7 @@ class UserFixtures extends Fixture
     {
         $user = new User();
         $user->setEmail('dn@dn.com') ;
-        $user->setUsername('dn@dn.com') ;
+        $user->setUsername('dn') ;
         $user->setRoles(['ROLE_ADMIN']) ;
 
         $user->setPassword($this->passwordEncoder->encodePassword(
@@ -29,6 +30,14 @@ class UserFixtures extends Fixture
         ));
         $manager->persist($user);
         $manager->flush();
+
+        $Hospital = new Hospital();
+        $Hospital->setNameHosp('faisal') ;
+        $Hospital->setAddress('riyadh') ;
+        $Hospital->setContactNumber('012333445') ;
+
+        $manager->persist($Hospital);
         $manager->flush();
+
     }
 }

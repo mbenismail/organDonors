@@ -1,0 +1,43 @@
+{% extends 'admin/BaseAdmin.html.twig' %}
+
+{% block title %}Hospital index{% endblock %}
+
+{% block body %}
+    <h1>Hospital List</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Hospital Name</th>
+                <th>Address</th>
+                <th>Contact Number</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for hospital in hospitals %}
+            <tr>
+                <td>{{ hospital.id }}</td>
+                <td>{{ hospital.NameHosp }}</td>
+                <td>{{ hospital.Address }}</td>
+                <td>{{ hospital.ContactNumber }}</td>
+                <td>
+                    <a class="btn btn-primary" href="{{ path('hospital_edit', {'id': hospital.id}) }}">edit</a>
+                    <form onsubmit="return confirm('Are you sure to delete the hospital ?')" action="{{ path('hospital_delete' , {'id' : hospital.id}) }}"  method="post" style="display: inline-block">
+                        <input type="hidden" value="DELETE" name="_method">
+                        <input type="hidden" name="_token" value="{{ csrf_token("delete"~hospital.id) }}">
+                        <button class="btn btn-danger">Delete</button>
+                    </form>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="5">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a class="btn btn-success" href="{{ path('hospital_new') }}">Create new</a>
+{% endblock %}

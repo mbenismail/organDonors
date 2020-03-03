@@ -35,7 +35,8 @@ class User implements UserInterface
     private $password;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @Assert\Email()
+     * @ORM\Column(type="string", length=255 )
      */
     private $email;
 
@@ -45,10 +46,15 @@ class User implements UserInterface
     }
 
     /**
-     * @Assert\NotBlank()
+
      * @Assert\Length(max=250)
      */
     private $plainPassword;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Hospital", inversedBy="users")
+     */
+    private $hospital;
 
     /**
      * A visual identifier that represents this user.
@@ -144,5 +150,17 @@ class User implements UserInterface
     public function setPlainPassword($plainPassword): void
     {
         $this->plainPassword = $plainPassword;
+    }
+
+    public function getHospital(): ?Hospital
+    {
+        return $this->hospital;
+    }
+
+    public function setHospital(?Hospital $hospital): self
+    {
+        $this->hospital = $hospital;
+
+        return $this;
     }
 }

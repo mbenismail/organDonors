@@ -1,0 +1,49 @@
+{% extends 'admin/BaseAdmin.html.twig' %}
+
+{% block title %}Patient List{% endblock %}
+
+{% block body %}
+    <h1>Patient List</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Email</th>
+                <th>Full name</th>
+                <th>Phone</th>
+                <th>Address</th>
+                <th>Blood Type</th>
+                <th>Hospital</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for patient in patients %}
+            <tr>
+                <td>{{ patient.id }}</td>
+                <td>{{ patient.email }}</td>
+                <td>{{ patient.Fullname }}</td>
+                <td>{{ patient.Phone }}</td>
+                <td>{{ patient.Address }}</td>
+                <td>{{ patient.BloodType }}</td>
+                <td>{{ patient.hospital.nameHosp }}</td>
+                <td>
+                    <a class="btn btn-primary" href="{{ path('patient_edit', {'id': patient.id}) }}">edit</a>
+                    <form onsubmit="return confirm('Are you sure to delete the patient ?')" action="{{ path('patient_delete' , {'id' : patient.id}) }}"  method="post" style="display: inline-block">
+                        <input type="hidden" value="DELETE" name="_method">
+                        <input type="hidden" name="_token" value="{{ csrf_token("delete"~patient.id) }}">
+                        <button class="btn btn-danger">Delete</button>
+                    </form>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="7">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a class="btn btn-success" href="{{ path('patient_new') }}">Create new</a>
+{% endblock %}
