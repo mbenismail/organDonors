@@ -43,10 +43,16 @@ class Hospital
      */
     private $users;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Appointement", mappedBy="hospital")
+     */
+    private $appointements;
+
     public function __construct()
     {
         $this->patients = new ArrayCollection();
         $this->users = new ArrayCollection();
+        $this->appointements = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -146,6 +152,37 @@ class Hospital
             // set the owning side to null (unless already changed)
             if ($user->getHospital() === $this) {
                 $user->setHospital(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Appointement[]
+     */
+    public function getAppointements(): Collection
+    {
+        return $this->appointements;
+    }
+
+    public function addAppointement(Appointement $appointement): self
+    {
+        if (!$this->appointements->contains($appointement)) {
+            $this->appointements[] = $appointement;
+            $appointement->setHospital($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAppointement(Appointement $appointement): self
+    {
+        if ($this->appointements->contains($appointement)) {
+            $this->appointements->removeElement($appointement);
+            // set the owning side to null (unless already changed)
+            if ($appointement->getHospital() === $this) {
+                $appointement->setHospital(null);
             }
         }
 

@@ -1,0 +1,46 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Donor{% endblock %}
+
+{% block body %}
+    <h1>Donor</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ donor.id }}</td>
+            </tr>
+            <tr>
+                <th>Fullname</th>
+                <td>{{ donor.Fullname }}</td>
+            </tr>
+            <tr>
+                <th>Email</th>
+                <td>{{ donor.Email }}</td>
+            </tr>
+            <tr>
+                <th>Phone</th>
+                <td>{{ donor.Phone }}</td>
+            </tr>
+            <tr>
+                <th>TypeDonation</th>
+                <td>{{ donor.TypeDonation }}</td>
+            </tr>
+            <tr>
+                <th>BloodType</th>
+                <td>{{ donor.BloodType }}</td>
+            </tr>
+            <tr>
+                <th>Password</th>
+                <td>{{ donor.password }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('donor_index') }}">back to list</a>
+
+    <a href="{{ path('donor_edit', {'id': donor.id}) }}">edit</a>
+
+    {{ include('donor/_delete_form.html.twig') }}
+{% endblock %}

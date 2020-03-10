@@ -56,9 +56,15 @@ class Patient
      */
     private $matchingTests;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Appointement", mappedBy="patient")
+     */
+    private $appointements;
+
     public function __construct()
     {
         $this->matchingTests = new ArrayCollection();
+        $this->appointements = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -163,6 +169,37 @@ class Patient
             // set the owning side to null (unless already changed)
             if ($matchingTest->getPatient() === $this) {
                 $matchingTest->setPatient(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Appointement[]
+     */
+    public function getAppointements(): Collection
+    {
+        return $this->appointements;
+    }
+
+    public function addAppointement(Appointement $appointement): self
+    {
+        if (!$this->appointements->contains($appointement)) {
+            $this->appointements[] = $appointement;
+            $appointement->setPatient($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAppointement(Appointement $appointement): self
+    {
+        if ($this->appointements->contains($appointement)) {
+            $this->appointements->removeElement($appointement);
+            // set the owning side to null (unless already changed)
+            if ($appointement->getPatient() === $this) {
+                $appointement->setPatient(null);
             }
         }
 

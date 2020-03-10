@@ -1,0 +1,45 @@
+{% extends 'admin/BaseAdmin.html.twig' %}
+
+{% block title %}Appointment List{% endblock %}
+
+{% block body %}
+    <h1>Appointment List</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Appointment date and Time</th>
+                <th>Hospital</th>
+                <th>Donor</th>
+                <th>Patient</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for appointement in appointements %}
+            <tr>
+                <td>{{ appointement.id }}</td>
+                <td>{{ appointement.AppTime ? appointement.AppTime|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ appointement.hospital.nameHosp }}</td>
+                <td>{{ appointement.donor ? appointement.donor.fullname : '' }}</td>
+                <td>{{ appointement.patient ? appointement.patient.fullname : '' }}</td>
+                <td>
+                    <a class="btn btn-primary" href="{{ path('appointement_edit', {'id': appointement.id}) }}">edit</a>
+                    <form onsubmit="return confirm('Are you sure to delete the Appointment ?')" action="{{ path('appointement_delete' , {'id' : appointement.id}) }}"  method="post" style="display: inline-block">
+                        <input type="hidden" value="DELETE" name="_method">
+                        <input type="hidden" name="_token" value="{{ csrf_token("delete"~appointement.id) }}">
+                        <button class="btn btn-danger">Delete</button>
+                    </form>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="3">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a class="btn btn-success" href="{{ path('appointement_new') }}">Create new</a>
+{% endblock %}

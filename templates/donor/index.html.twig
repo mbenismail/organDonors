@@ -1,0 +1,48 @@
+{% extends 'admin/BaseAdmin.html.twig' %}
+
+{% block title %}Donor List{% endblock %}
+
+{% block body %}
+    <h1>Donor List</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Full name</th>
+                <th>Email</th>
+                <th>Phone</th>
+                <th>Type Donation</th>
+                <th>Blood Type</th>
+
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for donor in donors %}
+            <tr>
+                <td>{{ donor.id }}</td>
+                <td>{{ donor.Fullname }}</td>
+                <td>{{ donor.Email }}</td>
+                <td>{{ donor.Phone }}</td>
+                <td>{{ donor.TypeDonation }}</td>
+                <td>{{ donor.BloodType }}</td>
+                <td>
+
+                    <form onsubmit="return confirm('Are you sure to delete the donor ?')" action="{{ path('donor_delete' , {'id' : donor.id}) }}"  method="post" style="display: inline-block">
+                        <input type="hidden" value="DELETE" name="_method">
+                        <input type="hidden" name="_token" value="{{ csrf_token("delete"~donor.id) }}">
+                        <button class="btn btn-danger">Delete</button>
+                    </form>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="8">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+
+{% endblock %}

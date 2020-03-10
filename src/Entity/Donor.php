@@ -2,7 +2,10 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert ;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\DonorRepository")
@@ -23,11 +26,13 @@ class Donor
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\Email()
      */
     private $Email;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\Length(min="10" , max="10")
      */
     private $Phone;
 
@@ -41,10 +46,16 @@ class Donor
      */
     private $BloodType;
 
+
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\OneToMany(targetEntity="App\Entity\Appointement", mappedBy="donor")
      */
-    private $password;
+    private $appointements;
+
+    public function __construct()
+    {
+        $this->appointements = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -119,6 +130,37 @@ class Donor
     public function setPassword(string $password): self
     {
         $this->password = $password;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Appointement[]
+     */
+    public function getAppointements(): Collection
+    {
+        return $this->appointements;
+    }
+
+    public function addAppointement(Appointement $appointement): self
+    {
+        if (!$this->appointements->contains($appointement)) {
+            $this->appointements[] = $appointement;
+            $appointement->setDonor($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAppointement(Appointement $appointement): self
+    {
+        if ($this->appointements->contains($appointement)) {
+            $this->appointements->removeElement($appointement);
+            // set the owning side to null (unless already changed)
+            if ($appointement->getDonor() === $this) {
+                $appointement->setDonor(null);
+            }
+        }
 
         return $this;
     }
