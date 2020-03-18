@@ -9,8 +9,17 @@
 
     <div class="container w-50 p-5 ">
 
+
+        {% for message in app.flashes('error') %}
+            <div class="alert alert-danger">
+                {{ message }}
+            </div>
+        {% endfor %}
         <div class="alert-success alert">
-            Thank you for filling up your information , you will be contacted as soon as possible for the analysis
+            Thank you for filling up your information , please verify your email :
+            {{ form_start(form) }}
+                {{ form_widget(form) }}
+            {{ form_end(form) }}
         </div>
 
 

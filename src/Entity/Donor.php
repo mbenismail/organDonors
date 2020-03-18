@@ -52,6 +52,16 @@ class Donor
      */
     private $appointements;
 
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $emailcode;
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $verified;
+
     public function __construct()
     {
         $this->appointements = new ArrayCollection();
@@ -161,6 +171,30 @@ class Donor
                 $appointement->setDonor(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getEmailcode(): ?string
+    {
+        return $this->emailcode;
+    }
+
+    public function setEmailcode(string $emailcode): self
+    {
+        $this->emailcode = $emailcode;
+
+        return $this;
+    }
+
+    public function getVerified(): ?bool
+    {
+        return $this->verified;
+    }
+
+    public function setVerified(bool $verified): self
+    {
+        $this->verified = $verified;
 
         return $this;
     }

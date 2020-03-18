@@ -6,6 +6,8 @@ use App\Entity\Donor;
 use App\Form\DonorType;
 use App\Repository\DonorRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -16,7 +18,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class DonorController extends AbstractController
 {
     /**
-     * @Route("/", name="donor_index", methods={"GET"})
+     * @Route("/", name="donor_index", methods={"GET" , "POST"})
      */
     public function index(DonorRepository $donorRepository): Response
     {
@@ -25,26 +27,66 @@ class DonorController extends AbstractController
         ]);
     }
     /**
-     * @Route("/confirmation", name="donor_confirm", methods={"GET"})
+     * @Route("/confirmation", name="donor_confirm", methods={"GET","POST"})
      */
-    public function showConfirm (DonorRepository $donorRepository): Response
+    public function showConfirm (DonorRepository $donorRepository , Request $request): Response
     {
-        return $this->render('donor/show-confirmation.html.twig');
+        $form = $this->createFormBuilder()
+            ->add('Code', TextType::class)
+            ->add('Verify', SubmitType::class)
+            ->getForm();
+
+        $form->handleRequest($request );
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            // data is an array with "name", "email", and "message" keys
+
+
+            $entityManager = $this->getDoctrine()->getManager();
+
+
+            $id= $this->get('session')->get('user');
+
+           $isver =  $entityManager->getRepository(Donor::class)->findOneBy(['emailcode' => $form->get('Code')->getData()  , 'id' => $id]) ;
+
+           //dump($isver);
+           if ($isver) {
+               $this->addFlash(
+                   'success',
+                   'Thank you to verify your code'
+               );
+               return $this->redirectToRoute('app_login');
+           }else{
+               $this->addFlash(
+                   'error',
+                   'Please verify the code'
+               );
+           }
+        }
+        return $this->render('donor/show-confirmation.html.twig' , ['form' => $form->createView()]);
     }
     /**
      * @Route("/new", name="donor_new", methods={"GET","POST"})
      */
-    public function new(Request $request): Response
+    public function new(Request $request , \Swift_Mailer $mailer): Response
     {
         $donor = new Donor();
         $form = $this->createForm(DonorType::class, $donor);
+        $donor ->setEmailcode(rand(1000,9999)) ;
+        $donor ->setVerified(0) ;
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($donor);
             $entityManager->flush();
-
+            $message = (new \Swift_Message('Confirm your email'))
+                ->setFrom(['saveorgans@gmail.com' => 'OrgansDonors'])
+                ->setTo($donor->getEmail());
+            $message->setBody($this->renderView('donor/mailcode.html.twig',
+                ['name' => $donor->getFullname(), 'code' => $donor->getEmailcode() ]),'text/html');
+            $mailer->send($message);
+            $this->get('session')->set('user', $donor->getId());
             return $this->redirectToRoute('donor_confirm');
         }
 
