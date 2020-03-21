@@ -62,9 +62,21 @@ class Donor
      */
     private $verified;
 
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\MedicineRequest", mappedBy="donor")
+     */
+    private $medicineRequests;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\DoctorRequest", mappedBy="donor")
+     */
+    private $doctorRequests;
+
     public function __construct()
     {
         $this->appointements = new ArrayCollection();
+        $this->medicineRequests = new ArrayCollection();
+        $this->doctorRequests = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -195,6 +207,62 @@ class Donor
     public function setVerified(bool $verified): self
     {
         $this->verified = $verified;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|MedicineRequest[]
+     */
+    public function getMedicineRequests(): Collection
+    {
+        return $this->medicineRequests;
+    }
+
+    public function addMedicineRequest(MedicineRequest $medicineRequest): self
+    {
+        if (!$this->medicineRequests->contains($medicineRequest)) {
+            $this->medicineRequests[] = $medicineRequest;
+            $medicineRequest->addDonor($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMedicineRequest(MedicineRequest $medicineRequest): self
+    {
+        if ($this->medicineRequests->contains($medicineRequest)) {
+            $this->medicineRequests->removeElement($medicineRequest);
+            $medicineRequest->removeDonor($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|DoctorRequest[]
+     */
+    public function getDoctorRequests(): Collection
+    {
+        return $this->doctorRequests;
+    }
+
+    public function addDoctorRequest(DoctorRequest $doctorRequest): self
+    {
+        if (!$this->doctorRequests->contains($doctorRequest)) {
+            $this->doctorRequests[] = $doctorRequest;
+            $doctorRequest->addDonor($this);
+        }
+
+        return $this;
+    }
+
+    public function removeDoctorRequest(DoctorRequest $doctorRequest): self
+    {
+        if ($this->doctorRequests->contains($doctorRequest)) {
+            $this->doctorRequests->removeElement($doctorRequest);
+            $doctorRequest->removeDonor($this);
+        }
 
         return $this;
     }

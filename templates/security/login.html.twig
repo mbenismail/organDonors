@@ -53,7 +53,29 @@
             border-top-right-radius: 0;
         }
     </style>
-
+    <div class="container">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ path('donor_new') }}" >
+                        Donor Registration
+                    </a>
+                </li><li class="nav-item">
+                    <a class="nav-link" href="{{ path('medicine_request_new') }}" >
+                        Medicine request
+                    </a>
+                </li><li class="nav-item">
+                    <a class="nav-link" href="{{ path('doctor_request_new') }}" >
+                        Contact Doctor
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </nav>
     <div class="container text-center">
         <img src="{{ asset('dist/img/donorsplash.png') }}" width="200px">
     <form method="post" class="form-signin">
@@ -101,5 +123,6 @@
             Donor Registration
         </a>
     </form>
+    </div>
     </div>
 {% endblock %}
