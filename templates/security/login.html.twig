@@ -19,8 +19,8 @@
             -webkit-box-pack: center;
             justify-content: center;
             padding-top: 40px;
-            padding-bottom: 40px;
-            background-color: #fffcfc;
+            background-color: #8ff4f4;
+            padding-bottom: 20px;
         }
 
         .form-signin {
@@ -77,6 +77,10 @@
         </div>
     </nav>
     <div class="container text-center">
+        <p>Our website specializes in registering donors who wish to donate their organs, where through this website, they can express a desire to donate organs and can also donate after death to fill out the organ donation form. The idea of the form belongs to the custodian of the Two Holy Mosques, King Salman bin Abdulaziz Al Saud, and aims to encourage the community in Saudi Arabia to donate their organs to patients.
+            Our website aims to quickly find a suitable donor for the patient and
+            facilitate the donation process. It provides services to the donor, including knowing the terms of the donation and booking an appointment for donation quickly where a list of the names of patients who need to donate priority or a patient with a related connection to the donor, and the hospital is offered the closest or available, and after His donation can communicate with the doctor and he can also re-drain the medicine.
+        </p>
         <img src="{{ asset('dist/img/donorsplash.png') }}" width="200px">
     <form method="post" class="form-signin">
         {% for message in app.flashes('success') %}
