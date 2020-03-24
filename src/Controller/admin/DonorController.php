@@ -90,7 +90,7 @@ class DonorController extends AbstractController
                 ->setFrom(['saveorgans@gmail.com' => 'OrgansDonors'])
                 ->setTo($donor->getEmail());
             $message->setBody($this->renderView('donor/mailcode.html.twig',
-                ['name' => $donor->getFullname(), 'code' => $donor->getEmailcode() ]),'text/html');
+                ['name' => $donor->getFirstName(), 'code' => $donor->getEmailcode() ]),'text/html');
             $mailer->send($message);
             $this->get('session')->set('user', $donor->getId());
             return $this->redirectToRoute('donor_confirm');
