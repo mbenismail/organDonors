@@ -37,7 +37,7 @@ class MedicineRequestController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($medicineRequest);
+
             $donordetails =  $entityManager->getRepository(Donor::class)->findOneBy(['id' => $form->get('donor')->getData()  ]) ;
 
             if (!$donordetails) {
@@ -46,6 +46,8 @@ class MedicineRequestController extends AbstractController
                     'Please verify your donor id '
                 );
             }else {
+                $medicineRequest->setDonor($donordetails);
+                $entityManager->persist($medicineRequest);
                 $this->addFlash(
                     'success',
                     'You application has been issued, you can get the medicine from the pharmacy'

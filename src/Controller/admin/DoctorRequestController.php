@@ -38,15 +38,17 @@ class DoctorRequestController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
 
             $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($doctorRequest);
+
             $donordetails =  $entityManager->getRepository(Donor::class)->findOneBy(['id' => $form->get('donor')->getData()  ]) ;
-            
+
             if (!$donordetails) {
                 $this->addFlash(
                     'error',
                     'Please verify your donor id '
                 );
             }else {
+                $doctorRequest->setDonor($donordetails);
+                $entityManager->persist($doctorRequest);
                 $this->addFlash(
                     'success',
                     'You application has been issued, you will  receive an email from the doctor asap'

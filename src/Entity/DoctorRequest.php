@@ -31,7 +31,7 @@ class DoctorRequest
     private $QuestionDate;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\donor", inversedBy="doctorRequests")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Donor", inversedBy="doctorRequests")
      */
     private $donor;
 
