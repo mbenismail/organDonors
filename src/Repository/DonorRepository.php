@@ -19,22 +19,49 @@ class DonorRepository extends ServiceEntityRepository
         parent::__construct($registry, Donor::class);
     }
 
-    // /**
-    //  * @return Donor[] Returns an array of Donor objects
-    //  */
-    /*
-    public function findByExampleField($value)
+     /**
+      * @return Donor[] Returns an array of Donor objects
+      */
+
+    public function finddonors($blood , $organ)
     {
+
+        $listblood = '' ;
+
+        switch ($blood) {
+            case 'O-':
+                $listblood = "('O-')";
+                break ;
+            case 'O+':
+                $listblood = "('O-','O+')" ;
+                break ;
+            case 'A-':
+                $listblood = "('O-', 'A-')" ;
+                break ;
+            case 'A+':
+                $listblood = "('O-', 'O+', 'A-' , 'A+')" ;
+                break ;
+            case 'B-':
+                $listblood = "('O-', 'B-')" ;
+                break ;
+            case 'B+':
+                $listblood = "('O-', 'O+', 'B-' , 'B+')" ;
+                break ;
+            case 'AB-':
+                $listblood = "('O-', 'B-', 'A-' , 'AB-')" ;
+                break ;
+            case 'AB+':
+                $listblood = "('O-', 'O+', 'A-' , 'A+' , 'B-' , 'B+' , 'AB-' , 'AB+')" ;
+                break ;
+        }
         return $this->createQueryBuilder('d')
-            ->andWhere('d.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('d.id', 'ASC')
-            ->setMaxResults(10)
+            ->andWhere('d.BloodType in '.$listblood.' and d.OrganDonation = :od')
+            ->setParameter('od', $organ)
             ->getQuery()
             ->getResult()
         ;
     }
-    */
+
 
     /*
     public function findOneBySomeField($value): ?Donor

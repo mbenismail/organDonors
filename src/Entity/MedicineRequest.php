@@ -11,6 +11,7 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class MedicineRequest
 {
+
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
@@ -18,19 +19,21 @@ class MedicineRequest
      */
     private $id;
 
-    /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Donor", inversedBy="medicineRequests")
-     */
-    private $donor;
+
 
     /**
      * @ORM\Column(type="datetime")
      */
     private $RequestDate;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Donor", inversedBy="medicineRequests")
+     */
+    private $donor;
+
     public function __construct()
     {
-        $this->donor = new ArrayCollection();
+        $this->RequestDate = new \DateTime('now') ;
     }
 
     public function getId(): ?int
@@ -38,28 +41,14 @@ class MedicineRequest
         return $this->id;
     }
 
-    /**
-     * @return Collection|Donor[]
-     */
-    public function getDonor(): Collection
+    public function getDonor(): ?Donor
     {
         return $this->donor;
     }
 
-    public function addDonor(Donor $donor): self
+    public function setDonor(?Donor $donor): self
     {
-        if (!$this->donor->contains($donor)) {
-            $this->donor[] = $donor;
-        }
-
-        return $this;
-    }
-
-    public function removeDonor(Donor $donor): self
-    {
-        if ($this->donor->contains($donor)) {
-            $this->donor->removeElement($donor);
-        }
+        $this->donor = $donor;
 
         return $this;
     }
@@ -75,4 +64,5 @@ class MedicineRequest
 
         return $this;
     }
+
 }

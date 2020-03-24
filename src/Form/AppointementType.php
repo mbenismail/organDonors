@@ -17,7 +17,7 @@ class AppointementType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('AppTime' , DateTimeType::class ,  ['label'=> 'Appointment date and time'])
+            ->add('AppTime' , DateTimeType::class ,  ['label'=> 'Appointment date and time' ,  'widget' => 'single_text'])
             ->add('hospital' , EntityType::class , [
                 'class' => Hospital::class,
                 'choice_label' => 'Name_hosp',
@@ -32,7 +32,10 @@ class AppointementType extends AbstractType
                 'class' => Donor::class,
                 'placeholder' => 'Choose an donor',
                 'required' => false,
-                'choice_label' => 'Fullname',
+                'choice_label' =>  function($donor, $key, $index) {
+
+                                    return $donor->getFirstName() . ' ' . $donor->getLastName();
+                                }
             ])
         ;
     }

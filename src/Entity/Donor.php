@@ -19,12 +19,7 @@ class Donor
      */
     private $id;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $Fullname;
-
-    /**
+     /**
      * @ORM\Column(type="string", length=255)
      * @Assert\Email()
      */
@@ -62,21 +57,54 @@ class Donor
      */
     private $verified;
 
+
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\MedicineRequest", mappedBy="donor")
+     * @ORM\Column(type="string", length=255)
+     */
+    private $FirstName;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $LastName;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\MedicineRequest", mappedBy="donor")
      */
     private $medicineRequests;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\DoctorRequest", mappedBy="donor")
+     * @ORM\OneToMany(targetEntity="App\Entity\DoctorRequest", mappedBy="donor")
      */
     private $doctorRequests;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $OrganDonation;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\MatchingTest", mappedBy="donor")
+     */
+    private $matchingTests;
+
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $age;
+
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $weight;
 
     public function __construct()
     {
         $this->appointements = new ArrayCollection();
         $this->medicineRequests = new ArrayCollection();
         $this->doctorRequests = new ArrayCollection();
+        $this->matchingTests = new ArrayCollection();
+
     }
 
     public function getId(): ?int
@@ -211,6 +239,30 @@ class Donor
         return $this;
     }
 
+    public function getFirstName(): ?string
+    {
+        return $this->FirstName;
+    }
+
+    public function setFirstName(string $FirstName): self
+    {
+        $this->FirstName = $FirstName;
+
+        return $this;
+    }
+
+    public function getLastName(): ?string
+    {
+        return $this->LastName;
+    }
+
+    public function setLastName(string $LastName): self
+    {
+        $this->LastName = $LastName;
+
+        return $this;
+    }
+
     /**
      * @return Collection|MedicineRequest[]
      */
@@ -223,7 +275,7 @@ class Donor
     {
         if (!$this->medicineRequests->contains($medicineRequest)) {
             $this->medicineRequests[] = $medicineRequest;
-            $medicineRequest->addDonor($this);
+            $medicineRequest->setDonor($this);
         }
 
         return $this;
@@ -233,7 +285,10 @@ class Donor
     {
         if ($this->medicineRequests->contains($medicineRequest)) {
             $this->medicineRequests->removeElement($medicineRequest);
-            $medicineRequest->removeDonor($this);
+            // set the owning side to null (unless already changed)
+            if ($medicineRequest->getDonor() === $this) {
+                $medicineRequest->setDonor(null);
+            }
         }
 
         return $this;
@@ -251,7 +306,7 @@ class Donor
     {
         if (!$this->doctorRequests->contains($doctorRequest)) {
             $this->doctorRequests[] = $doctorRequest;
-            $doctorRequest->addDonor($this);
+            $doctorRequest->setDonor($this);
         }
 
         return $this;
@@ -261,8 +316,78 @@ class Donor
     {
         if ($this->doctorRequests->contains($doctorRequest)) {
             $this->doctorRequests->removeElement($doctorRequest);
-            $doctorRequest->removeDonor($this);
+            // set the owning side to null (unless already changed)
+            if ($doctorRequest->getDonor() === $this) {
+                $doctorRequest->setDonor(null);
+            }
         }
+
+        return $this;
+    }
+
+    public function getOrganDonation(): ?string
+    {
+        return $this->OrganDonation;
+    }
+
+    public function setOrganDonation(string $OrganDonation): self
+    {
+        $this->OrganDonation = $OrganDonation;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|MatchingTest[]
+     */
+    public function getMatchingTests(): Collection
+    {
+        return $this->matchingTests;
+    }
+
+    public function addMatchingTest(MatchingTest $matchingTest): self
+    {
+        if (!$this->matchingTests->contains($matchingTest)) {
+            $this->matchingTests[] = $matchingTest;
+            $matchingTest->setDonor($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMatchingTest(MatchingTest $matchingTest): self
+    {
+        if ($this->matchingTests->contains($matchingTest)) {
+            $this->matchingTests->removeElement($matchingTest);
+            // set the owning side to null (unless already changed)
+            if ($matchingTest->getDonor() === $this) {
+                $matchingTest->setDonor(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getAge(): ?int
+    {
+        return $this->age;
+    }
+
+    public function setAge(int $age): self
+    {
+        $this->age = $age;
+
+        return $this;
+    }
+
+    public function getWeight(): ?int
+    {
+        return $this->weight;
+    }
+
+    public function setWeight(int $weight): self
+    {
+        $this->weight = $weight;
 
         return $this;
     }

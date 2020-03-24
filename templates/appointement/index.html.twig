@@ -22,7 +22,7 @@
                 <td>{{ appointement.id }}</td>
                 <td>{{ appointement.AppTime ? appointement.AppTime|date('Y-m-d H:i:s') : '' }}</td>
                 <td>{{ appointement.hospital.nameHosp }}</td>
-                <td>{{ appointement.donor ? appointement.donor.fullname : '' }}</td>
+                <td>{{ appointement.donor ? appointement.donor.firstName  ~ " "~ appointement.donor.lastName : '' }}</td>
                 <td>{{ appointement.patient ? appointement.patient.fullname : '' }}</td>
                 <td>
                     <a class="btn btn-primary" href="{{ path('appointement_edit', {'id': appointement.id}) }}">edit</a>

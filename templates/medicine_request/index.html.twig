@@ -9,14 +9,25 @@
         <thead>
             <tr>
                 <th>Id</th>
+                <th>Donor First name</th>
+                <th>Donor Last name</th>
+                <th>Donor Email</th>
+                <th>Donor phone</th>
                 <th>RequestDate</th>
-
             </tr>
         </thead>
         <tbody>
         {% for medicine_request in medicine_requests %}
+
             <tr>
                 <td>{{ medicine_request.id }}</td>
+
+                <td>{{ medicine_request.donor.firstName ? medicine_request.donor.firstName : ''  }}</td>
+                <td>{{ medicine_request.donor.lastName ? medicine_request.donor.lastName : ''  }}</td>
+                <td>{{ medicine_request.donor.email ? medicine_request.donor.email : ''  }}</td>
+                <td>{{ medicine_request.donor.phone ? medicine_request.donor.phone : ''  }}</td>
+
+
                 <td>{{ medicine_request.RequestDate ? medicine_request.RequestDate|date('Y-m-d H:i:s') : '' }}</td>
             </tr>
         {% else %}
@@ -27,5 +38,4 @@
         </tbody>
     </table>
 
-    <a href="{{ path('medicine_request_new') }}">Create new</a>
 {% endblock %}

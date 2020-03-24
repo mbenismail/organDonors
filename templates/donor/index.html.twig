@@ -9,10 +9,12 @@
         <thead>
             <tr>
                 <th>Id</th>
-                <th>Full name</th>
+                <th>First name</th>
+                <th>Last name</th>
                 <th>Email</th>
                 <th>Phone</th>
                 <th>Type Donation</th>
+                <th>Organ Donation</th>
                 <th>Blood Type</th>
 
                 <th>actions</th>
@@ -22,13 +24,15 @@
         {% for donor in donors %}
             <tr>
                 <td>{{ donor.id }}</td>
-                <td>{{ donor.Fullname }}</td>
+                <td>{{ donor.firstName }}</td>
+                <td>{{ donor.lastName }}</td>
                 <td>{{ donor.Email }}</td>
                 <td>{{ donor.Phone }}</td>
-                <td>{{ donor.TypeDonation }}</td>
+                <td>{{ donor.TypeDonation ? 'Before Death' : 'After Death'}}</td>
+                <td>{{ donor.organDonation }}</td>
                 <td>{{ donor.BloodType }}</td>
                 <td>
-
+                    <a href="{{ path('donor_show', {'id': donor.id}) }}" class="btn btn-primary">Show infos</a>
                     <form onsubmit="return confirm('Are you sure to delete the donor ?')" action="{{ path('donor_delete' , {'id' : donor.id}) }}"  method="post" style="display: inline-block">
                         <input type="hidden" value="DELETE" name="_method">
                         <input type="hidden" name="_token" value="{{ csrf_token("delete"~donor.id) }}">

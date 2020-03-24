@@ -18,10 +18,7 @@ class DoctorRequest
      */
     private $id;
 
-    /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Donor", inversedBy="doctorRequests")
-     */
-    private $donor;
+
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -33,9 +30,15 @@ class DoctorRequest
      */
     private $QuestionDate;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\donor", inversedBy="doctorRequests")
+     */
+    private $donor;
+
     public function __construct()
     {
-        $this->donor = new ArrayCollection();
+        $this->QuestionDate = new \DateTime() ;
+
     }
 
     public function getId(): ?int
@@ -43,31 +46,7 @@ class DoctorRequest
         return $this->id;
     }
 
-    /**
-     * @return Collection|Donor[]
-     */
-    public function getDonor(): Collection
-    {
-        return $this->donor;
-    }
 
-    public function addDonor(Donor $donor): self
-    {
-        if (!$this->donor->contains($donor)) {
-            $this->donor[] = $donor;
-        }
-
-        return $this;
-    }
-
-    public function removeDonor(Donor $donor): self
-    {
-        if ($this->donor->contains($donor)) {
-            $this->donor->removeElement($donor);
-        }
-
-        return $this;
-    }
 
     public function getQuestionText(): ?string
     {
@@ -89,6 +68,18 @@ class DoctorRequest
     public function setQuestionDate(\DateTimeInterface $QuestionDate): self
     {
         $this->QuestionDate = $QuestionDate;
+
+        return $this;
+    }
+
+    public function getDonor(): ?Donor
+    {
+        return $this->donor;
+    }
+
+    public function setDonor(?Donor $donor): self
+    {
+        $this->donor = $donor;
 
         return $this;
     }

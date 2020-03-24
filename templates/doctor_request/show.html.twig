@@ -1,9 +1,9 @@
-{% extends 'base.html.twig' %}
+{% extends 'admin/BaseAdmin.html.twig' %}
 
-{% block title %}DoctorRequest{% endblock %}
+{% block title %}Doctor Request{% endblock %}
 
 {% block body %}
-    <h1>DoctorRequest</h1>
+    <h1>Doctor Request</h1>
 
     <table class="table">
         <tbody>
@@ -19,12 +19,13 @@
                 <th>QuestionDate</th>
                 <td>{{ doctor_request.QuestionDate ? doctor_request.QuestionDate|date('Y-m-d H:i:s') : '' }}</td>
             </tr>
+            <tr>
+                <th>Donor Infos</th>
+                <td>{{ doctor_request.donor.firstName ? doctor_request.donor.firstName : '' }}</td>
+            </tr>
         </tbody>
     </table>
 
-    <a href="{{ path('doctor_request_index') }}">back to list</a>
+    <a class="btn btn-secondary" href="{{ path('doctor_request_index') }}">back to list</a>
 
-    <a href="{{ path('doctor_request_edit', {'id': doctor_request.id}) }}">edit</a>
-
-    {{ include('doctor_request/_delete_form.html.twig') }}
 {% endblock %}

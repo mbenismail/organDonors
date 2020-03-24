@@ -15,19 +15,27 @@ class DonorType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('Fullname')
+            ->add('firstName')
+            ->add('lastName')
             ->add('Email')
             ->add('Phone')
+            ->add('age')
+            ->add('weight')
             ->add('TypeDonation', ChoiceType::class , ['choices' => [
                 'Before Death' => '0' ,
                 'After Death' => '1'
                ]])
+            ->add('organDonation', ChoiceType::class , ['choices' => [
+                'Kidney' => 'Kidney' ,
+                'Liver' => 'Liver' ,
+                'Stem cells' => 'Stem cells' ,
+            ]])
             ->add('BloodType', ChoiceType::class , ['choices' => [
-                'O−' => 'O−' ,
+                'O-' => 'O-' ,
                 'O+' => 'O+',
-                'A−' => 'A−',
-                'B−' => 'B−',
-                'AB−' => 'AB−',
+                'A-' => 'A-',
+                'B-' => 'B-',
+                'AB-' => 'AB-',
                 'A+' => 'A+',
                 'B+' => 'B+',
                 'AB+' => 'AB+']] )

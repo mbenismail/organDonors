@@ -2,6 +2,7 @@
 
 namespace App\Controller\admin;
 
+use App\Entity\Donor;
 use App\Entity\MedicineRequest;
 use App\Form\MedicineRequestType;
 use App\Repository\MedicineRequestRepository;
@@ -37,9 +38,21 @@ class MedicineRequestController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($medicineRequest);
-            $entityManager->flush();
+            $donordetails =  $entityManager->getRepository(Donor::class)->findOneBy(['id' => $form->get('donor')->getData()  ]) ;
 
-            return $this->redirectToRoute('medicine_request_index');
+            if (!$donordetails) {
+                $this->addFlash(
+                    'error',
+                    'Please verify your donor id '
+                );
+            }else {
+                $this->addFlash(
+                    'success',
+                    'You application has been issued, you can get the medicine from the pharmacy'
+                );
+                $this->getDoctrine()->getManager()->flush();
+                return $this->redirectToRoute('medicine_request_new');
+            }
         }
 
         return $this->render('medicine_request/new.html.twig', [

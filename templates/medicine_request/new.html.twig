@@ -8,7 +8,16 @@
 {% block body %}
     <div class="container w-50 p-5 ">
         <h1>New Medicine Request</h1>
-
+        {% for message in app.flashes('success') %}
+            <div class="alert alert-success">
+                {{ message }}
+            </div>
+        {% endfor %}
+        {% for message in app.flashes('error') %}
+            <div class="alert alert-danger">
+                {{ message }}
+            </div>
+        {% endfor %}
         {{ include('donor/_form.html.twig') }}
     </div>
 

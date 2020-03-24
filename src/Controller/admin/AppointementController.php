@@ -9,6 +9,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use \Twilio\Rest\Client;
 
 /**
  * @Route("/admin/appointement")
@@ -27,8 +28,9 @@ class AppointementController extends AbstractController
 
     /**
      * @Route("/new", name="appointement_new", methods={"GET","POST"})
+     * @throws \Twilio\Exceptions\TwilioException
      */
-    public function new(Request $request): Response
+    public function new(Request $request , Client $twilio): Response
     {
         $appointement = new Appointement();
         $form = $this->createForm(AppointementType::class, $appointement);
@@ -39,6 +41,18 @@ class AppointementController extends AbstractController
             $entityManager->persist($appointement);
             $entityManager->flush();
 
+            if($appointement->getDonor()) {
+
+                dump('Good morning ' . $appointement->getDonor()->getFirstName() . ' ' . $appointement->getDonor()->getLastName() . ' : your appointment for analysis is for : ' . $appointement->getAppTime()->format('Y-m-d H:i:s') ) ;
+
+                $message = $twilio->messages->create(
+                    '+21652016412', // Send text to this number
+                    array(
+                        "from" => "+12076106607", //
+                        'body' => 'Good morning ' . $appointement->getDonor()->getFirstName() . ' ' . $appointement->getDonor()->getLastName() . ' : your appointment for analysis is for : ' . $appointement->getAppTime()->format('Y-m-d H:i:s')
+                    )
+                );
+            }
             return $this->redirectToRoute('appointement_index');
         }
 

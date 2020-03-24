@@ -1,4 +1,4 @@
-{% extends 'base.html.twig' %}
+{% extends 'admin/BaseAdmin.html.twig' %}
 
 {% block title %}Donor{% endblock %}
 
@@ -12,8 +12,12 @@
                 <td>{{ donor.id }}</td>
             </tr>
             <tr>
-                <th>Fullname</th>
-                <td>{{ donor.Fullname }}</td>
+                <th>First name</th>
+                <td>{{ donor.firstName }}</td>
+            </tr>
+            <tr>
+                <th>Last Name</th>
+                <td>{{ donor.lastName }}</td>
             </tr>
             <tr>
                 <th>Email</th>
@@ -24,23 +28,29 @@
                 <td>{{ donor.Phone }}</td>
             </tr>
             <tr>
-                <th>TypeDonation</th>
-                <td>{{ donor.TypeDonation }}</td>
+                <th>Type Donation</th>
+                <td>{{ donor.TypeDonation ?'Before death' : 'after death' }}</td>
             </tr>
             <tr>
-                <th>BloodType</th>
+                <th>Blood Type</th>
                 <td>{{ donor.BloodType }}</td>
             </tr>
             <tr>
-                <th>Password</th>
-                <td>{{ donor.password }}</td>
+                <th>Organ donation</th>
+                <td>{{ donor.organDonation }}</td>
+            </tr>
+            <tr>
+                <th>Age</th>
+                <td>{{ donor.age }}</td>
+            </tr>
+            <tr>
+                <th>Weight</th>
+                <td>{{ donor.weight }}</td>
             </tr>
         </tbody>
     </table>
 
-    <a href="{{ path('donor_index') }}">back to list</a>
+    <a class="btn btn-primary" href="{{ path('donor_index') }}">back to list</a>
 
-    <a href="{{ path('donor_edit', {'id': donor.id}) }}">edit</a>
 
-    {{ include('donor/_delete_form.html.twig') }}
 {% endblock %}

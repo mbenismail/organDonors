@@ -1,0 +1,72 @@
+{% extends 'admin/BaseAdmin.html.twig' %}
+
+{% block title %}Matching List {% endblock %}
+
+{% block body %}
+    <h1>Matching List</h1>
+    {% for message in app.flashes('success') %}
+        <div class="alert alert-success">
+            {{ message }}
+        </div>
+    {% endfor %}
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Donor infos</th>
+                <th>Patient infos</th>
+                <th>Operation date time</th>
+                <th>Actions</th>
+
+            </tr>
+        </thead>
+        <tbody>
+        {% for matchingtest in matchingtests %}
+            <tr>
+                <td>{{ matchingtest.id }}</td>
+                <td>{{ matchingtest.donor.firstName ~   matchingtest.donor.lastName }}</td>
+                <td>{{ matchingtest.patient.fullname }}</td>
+                <td>{{ (matchingtest.operationDateTime| date('d-m-Y H:i:s') != '30-11--0001 02:13:24' )? matchingtest.operationDateTime | date('d-m-Y H:i:s') : 'Not Configured yet' }}</td>
+                <td>
+                    <button data-target="#modal-default{{ matchingtest.id }}" data-toggle="modal" class="btn btn-success">Send messages for operation</button>
+
+                    <div class="modal fade" id="modal-default{{ matchingtest.id }}">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h4 class="modal-title">Please enter the operation date and time</h4>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+
+                                </div>
+                                <form action="{{ path('sendmessageforope' , {'id' : matchingtest.id , 'donor' : matchingtest.donor.id , 'patient' : matchingtest.patient.id}) }}"  method="post" style="display: inline-block">
+                                    <div class="modal-body">
+
+                                            <input type="datetime-local" id="operation_AppTime" name="operation[AppTime]" required="required" class="form-control">
+                                            <input type="hidden" value="POST" name="_method" id="_method">
+
+                                            <div class="modal-footer">
+                                                <button type="submit" class="btn btn-primary">Send</button>
+                                                <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
+
+                                            </div>
+
+                                    </div>
+                                </form>
+                            </div>
+                            <!-- /.modal-content -->
+                        </div>
+                        <!-- /.modal-dialog -->
+                    </div>
+                </td>
+
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="5">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a class="btn btn-success" href="{{ path('matching_index') }}">Create new matching</a>
+{% endblock %}

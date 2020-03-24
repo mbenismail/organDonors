@@ -49,14 +49,20 @@ class DonorController extends AbstractController
 
            $isver =  $entityManager->getRepository(Donor::class)->findOneBy(['emailcode' => $form->get('Code')->getData()  , 'id' => $id]) ;
 
+
            //dump($isver);
            if ($isver) {
+               $isver->setVerified(1) ;
+               $entityManager->persist($isver);
+               $entityManager->flush();
+
                $this->addFlash(
                    'success',
                    'Thank you to verify your code'
                );
                return $this->redirectToRoute('app_login');
            }else{
+
                $this->addFlash(
                    'error',
                    'Please verify the code'

@@ -14,6 +14,7 @@
                 <th>Phone</th>
                 <th>Address</th>
                 <th>Blood Type</th>
+                <th>Organ Need </th>
                 <th>Hospital</th>
                 <th>actions</th>
             </tr>
@@ -27,6 +28,7 @@
                 <td>{{ patient.Phone }}</td>
                 <td>{{ patient.Address }}</td>
                 <td>{{ patient.BloodType }}</td>
+                <td>{{ patient.organDonation }}</td>
                 <td>{{ patient.hospital.nameHosp }}</td>
                 <td>
                     <a class="btn btn-primary" href="{{ path('patient_edit', {'id': patient.id}) }}">edit</a>

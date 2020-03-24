@@ -10,20 +10,26 @@
             <tr>
                 <th>Id</th>
                 <th>Question Text</th>
+                <th>Donor First name</th>
+                <th>Donor Last name</th>
+                <th>Donor Email</th>
+                <th>Donor phone</th>
                 <th>Question Date</th>
-                <th>actions</th>
+                <th></th>
             </tr>
         </thead>
         <tbody>
         {% for doctor_request in doctor_requests %}
             <tr>
                 <td>{{ doctor_request.id }}</td>
-                <td>{{ doctor_request.QuestionText }}</td>
+                <td>{{ doctor_request.QuestionText|length > 50 ?doctor_request.QuestionText | slice(0, 50) ~ '...' :  doctor_request.QuestionText }}</td>
+                <td>{{ doctor_request.donor.firstName ? doctor_request.donor.firstName : ''  }}</td>
+                <td>{{ doctor_request.donor.lastName ? doctor_request.donor.lastName : ''  }}</td>
+                <td>{{ doctor_request.donor.email ? doctor_request.donor.email : ''  }}</td>
+                <td>{{ doctor_request.donor.phone ? doctor_request.donor.phone : ''  }}</td>
                 <td>{{ doctor_request.QuestionDate ? doctor_request.QuestionDate|date('Y-m-d H:i:s') : '' }}</td>
-                <td>
-                    <a href="{{ path('doctor_request_show', {'id': doctor_request.id}) }}">show</a>
-                    <a href="{{ path('doctor_request_edit', {'id': doctor_request.id}) }}">edit</a>
-                </td>
+                <td> <a class="btn btn-primary" href="{{ path('doctor_request_show', {'id': doctor_request.id}) }}">show</a></td>
+
             </tr>
         {% else %}
             <tr>
@@ -33,5 +39,5 @@
         </tbody>
     </table>
 
-    <a href="{{ path('doctor_request_new') }}">Create new</a>
+
 {% endblock %}

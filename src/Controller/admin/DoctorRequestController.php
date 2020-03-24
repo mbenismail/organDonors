@@ -3,6 +3,7 @@
 namespace App\Controller\admin;
 
 use App\Entity\DoctorRequest;
+use App\Entity\Donor;
 use App\Form\DoctorRequestType;
 use App\Repository\DoctorRequestRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -35,11 +36,25 @@ class DoctorRequestController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($doctorRequest);
-            $entityManager->flush();
+            $donordetails =  $entityManager->getRepository(Donor::class)->findOneBy(['id' => $form->get('donor')->getData()  ]) ;
+            
+            if (!$donordetails) {
+                $this->addFlash(
+                    'error',
+                    'Please verify your donor id '
+                );
+            }else {
+                $this->addFlash(
+                    'success',
+                    'You application has been issued, you will  receive an email from the doctor asap'
+                );
+                $this->getDoctrine()->getManager()->flush();
+                return $this->redirectToRoute('doctor_request_new');
+            }
 
-            return $this->redirectToRoute('doctor_request_index');
         }
 
         return $this->render('doctor_request/new.html.twig', [
@@ -67,9 +82,9 @@ class DoctorRequestController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
 
-            return $this->redirectToRoute('doctor_request_index');
+
+
         }
 
         return $this->render('doctor_request/edit.html.twig', [

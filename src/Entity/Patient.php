@@ -61,6 +61,16 @@ class Patient
      */
     private $appointements;
 
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $isurgent;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $organDonation;
+
     public function __construct()
     {
         $this->matchingTests = new ArrayCollection();
@@ -202,6 +212,30 @@ class Patient
                 $appointement->setPatient(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getIsurgent(): ?bool
+    {
+        return $this->isurgent;
+    }
+
+    public function setIsurgent(bool $isurgent): self
+    {
+        $this->isurgent = $isurgent;
+
+        return $this;
+    }
+
+    public function getOrganDonation(): ?string
+    {
+        return $this->organDonation;
+    }
+
+    public function setOrganDonation(string $organDonation): self
+    {
+        $this->organDonation = $organDonation;
 
         return $this;
     }

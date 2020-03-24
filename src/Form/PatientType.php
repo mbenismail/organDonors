@@ -19,12 +19,21 @@ class PatientType extends AbstractType
             ->add('Fullname')
             ->add('Phone')
             ->add('Address')
+            ->add('isurgent', ChoiceType::class , ['label'=>'Is urgent case','choices' => [
+                'No' => '0' ,
+                'Yes' => '1'
+            ]])
+            ->add('organDonation', ChoiceType::class , ['label'=>'Please select the organ that patient need' , 'choices' => [
+                'Kidney' => 'Kidney' ,
+                'Liver' => 'Liver' ,
+                'Stem cells' => 'Stem cells' ,
+            ]])
             ->add('BloodType', ChoiceType::class , ['choices' => [
-                'O−' => 'O−' ,
+                'O-' => 'O-' ,
                 'O+' => 'O+',
-                'A−' => 'A−',
-                'B−' => 'B−',
-                'AB−' => 'AB−',
+                'A-' => 'A-',
+                'B-' => 'B-',
+                'AB-' => 'AB-',
                 'A+' => 'A+',
                 'B+' => 'B+',
                 'AB+' => 'AB+']] )

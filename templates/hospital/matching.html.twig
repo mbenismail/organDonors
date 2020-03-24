@@ -1,0 +1,138 @@
+{% extends 'admin/BaseAdmin.html.twig' %}
+
+{% block title %}Priority donations{% endblock %}
+
+ {% block stylesheets %}
+     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" >
+     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+     <link rel="stylesheet" href="{{ asset('dist/css/skins/_all-skins.min.css') }}">
+     <link rel="stylesheet" href="{{ asset('dist/css/AdminLTE.min.css') }}">
+     <link href="{{ asset('dist/css/jquery.inputpicker.css') }}" rel="stylesheet">
+ {% endblock %}
+
+{% block body %}
+
+    <h1>Priority donations</h1>
+
+    <input class="form-control" id="demo"  value="">
+
+    <div class="container mt-md-4">
+
+
+    <h4 class="pagination-sm">List of donors corresponding to the selected patient</h4>
+
+        <table class="table">
+        <thead>
+            <tr>
+                <th>First name</th>
+                <th>Last name</th>
+                <th>Email</th>
+                <th>Phone</th>
+                <th>Type Donation</th>
+                <th>Organ Donation</th>
+                <th>Blood Type</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for donor in donors %}
+            <tr>
+                <td>{{ donor.firstName }}</td>
+                <td>{{ donor.lastName }}</td>
+                <td>{{ donor.Email }}</td>
+                <td>{{ donor.Phone }}</td>
+                <td>{{ donor.TypeDonation }}</td>
+                <td>{{ donor.organDonation }}</td>
+                <td>{{ donor.BloodType }}</td>
+                <td>
+                    <form onsubmit="return confirm('Are you sure to affect this donor to the selected patient ?')" action="{{ path('matching_affect' , {'id' : donor.id}) }}"  method="post" style="display: inline-block">
+                        <input type="hidden" value="POST" name="_method" id="_method">
+                        <input type="hidden" value="POST" name="idpatient" id="idpatient">
+                        <button class="btn btn-success">Affect</button>
+                    </form>
+                </td>
+
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="5">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+
+    </div>
+
+{% endblock %}
+
+{% block javascripts %}
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" ></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" ></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+    <script src="dist/js/adminlte.min.js" ></script>
+    <script src="{{asset('dist/js/jquery.inputpicker.js')}}" ></script>
+    <script >
+
+        var id = GetURLParameter('id');
+        $("#demo").val(id);
+        if ($("#idpatient"))
+            $("#idpatient").val(id);
+
+        $('#demo').inputpicker({
+            data:[
+                {% for patient in patients %}
+                    {value:"{{ patient.id }}",Fullname:"{{ patient.Fullname }}", BloodType: "{{ patient.BloodType }}" , organDonation: "{{ patient.organDonation }}" , IsUrgent: "{{ patient.isurgent ? 'Yes' : 'No'}}"  },
+                {% endfor %}
+            ],
+            fields:[
+                {name:'value',text:'Patient Id'},
+                {name:'Fullname',text:'Full name'},
+                {name:'BloodType',text:'Blood Type'},
+                {name:'organDonation',text:'Organ Donation'},
+                {name:'IsUrgent',text:'Is Urgent'}
+            ],
+            headShow: true,
+            fieldText : 'Fullname',
+            fieldValue: 'value'
+        });
+
+
+
+
+        function GetURLParameter(sParam) {
+
+            var sPageURL = window.location.search.substring(1);
+
+            var sURLVariables = sPageURL.split('&');
+
+            for (var i = 0; i < sURLVariables.length; i++) {
+
+                var sParameterName = sURLVariables[i].split('=');
+
+                if (sParameterName[0] == sParam) {
+
+                    return sParameterName[1];
+
+                }
+
+            }
+
+        }
+
+        $("#demo").change(function(){
+
+            window.location.href = "{{ path('matching_index') ~ '?id=' }}" + $("#demo").val();
+        });
+
+
+
+
+
+    </script>
+{% endblock %}
+
+
+
+
+
