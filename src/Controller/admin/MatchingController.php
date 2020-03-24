@@ -85,13 +85,13 @@ class MatchingController extends AbstractController
 
         dump('Good morning ' . $patient->getFullname() . ' : your appointment for the operation is for : ' . $matchingTest->getOperationDateTime()->format('Y-m-d H:i:s') ) ;
 
-//        $message = $twilio->messages->create(
-//            '+21652016412', // Send text to this number
-//            array(
-//                "from" => "+12076106607", //
-//                'body' => 'Good morning ' . $donor->getFirstName() . ' ' . $donor->getLastName() . ' : your appointment for the operation is for : ' . $matchingTest->getOperationDateTime()->format('Y-m-d H:i:s')
-//            )
-//        );
+        $message = $twilio->messages->create(
+            '+966533571248', // Send text to this number
+            array(
+                "from" => "+12076106607", //
+                'body' => 'Good morning ' . $donor->getFirstName() . ' ' . $donor->getLastName() . ' : your appointment for the operation is for : ' . $matchingTest->getOperationDateTime()->format('Y-m-d H:i:s')
+            )
+        );
 
         //display success message
 
