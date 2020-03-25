@@ -90,7 +90,7 @@
     <form method="post" class="form-signin">
         {% for message in app.flashes('success') %}
             <div class="alert alert-success">
-                {{ message }}
+                {{ message|raw }}
             </div>
         {% endfor %}
 

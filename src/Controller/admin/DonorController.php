@@ -52,7 +52,7 @@ class DonorController extends AbstractController
 
            //dump($isver);
            if ($isver) {
-               $isver->setVerified(1) ;
+               $isver->setVerified(1);
                $entityManager->persist($isver);
                $entityManager->flush();
 
@@ -60,6 +60,12 @@ class DonorController extends AbstractController
                    'success',
                    'Thank you to verify your code'
                );
+               if ($isver->getTypeDonation() == 1){
+                   $this->addFlash(
+                       'success',
+                       'You have chosen to donor your organ after death , please fill the form <a target="_blank" href="files/formdonors.pdf" >Click here</a>'
+                   );
+                }
                return $this->redirectToRoute('app_login');
            }else{
 
