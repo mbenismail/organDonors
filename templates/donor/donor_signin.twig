@@ -1,0 +1,147 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Log in!{% endblock %}
+{% block stylesheets %}
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+  {% endblock %}
+{% block body %}
+
+    <style >
+        body {
+            display: -ms-flexbox;
+            display: -webkit-box;
+            display: flex;
+            -ms-flex-align: center;
+            -ms-flex-pack: center;
+            -webkit-box-align: center;
+            align-items: center;
+            -webkit-box-pack: center;
+            justify-content: center;
+            padding-top: 20px;
+            background-color: #ffffff;
+            padding-bottom: 20px;
+        }
+
+        .form-signin {
+            width: 100%;
+
+            padding: 15px;
+            margin: 0 auto;
+            text-align: left!important;
+        }
+        .form-signin .checkbox {
+            font-weight: 400;
+        }
+        .form-signin .form-control {
+            position: relative;
+            box-sizing: border-box;
+            height: auto;
+
+            padding: 10px;
+            font-size: 16px;
+        }
+        .form-signin .form-control:focus {
+            z-index: 2;
+        }
+        .form-signin input[type="email"] {
+            margin-bottom: -1px;
+            border-bottom-right-radius: 0;
+            border-bottom-left-radius: 0;
+        }
+        .form-signin input[type="password"] {
+            margin-bottom: 10px;
+            border-top-left-radius: 0;
+            border-top-right-radius: 0;
+        }
+        .list-div a {
+            max-width: 80px;
+        }
+    </style>
+    <div class="container">
+
+
+        <div class="row">
+            <nav class="col-lg-8 navbar-nav mr-auto navbar navbar-expand-lg navbar-light bg-light">
+                <div class="row navbar-nav" style="flex-wrap: nowrap!important;">
+                    <div class="col-lg-2 nav-item">
+                    <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+                    </div>
+                    {% if (app.session.get('donor-id')) %}
+
+                        <div class="col-lg-5 nav-item">
+                        <a class="nav-link" href="{{ path('medicine_request_new') }}">
+                            Medicine request
+                        </a></div>
+                            <div class="col-lg-5 nav-item">
+                        <a class="nav-link" href="{{ path('doctor_request_new') }}">
+                            Contact Doctor
+                        </a></div>
+
+                    {% endif %}
+                </div>
+            </nav>
+            <div class="col-lg-4">
+                <div class="row">
+                    <div class="col-lg-4 float-right" >
+                        {% if (app.session.get('donor-id')) %}
+                    <a href="{{ path('donor_logout') }}">Logout</a>
+                        {% endif %}
+                    </div>
+                        <div class="col-lg-8">
+                            {% if (app.session.get('donor-id') is null) %}
+                    <a class="btn btn-dark" href="{{ path('app_login') }}">Are you center employee ? </a>
+                             {% else %}
+                                <span>Welcome <strong>{{  app.session.get('firstname')  }} {{ app.session.get('lastname') }}</strong></span>
+                            {% endif %}
+                        </div>
+                </div>
+            </div>
+        </div>
+
+
+
+        <div class="container text-center">
+            <p style="    font-size: 15px;
+    text-align: center;
+    line-height: 25px;
+    font-weight: bold;
+    border: 2px double white;
+    padding: 3px;">
+                "Save with your organs" is a web application that helps and makes it easier for the donor to donate.<br>
+                For The patient who must quickly find a suitable donor.<br>
+                (Together we can build a bright and better future for many patients)<br>
+            </p>
+            <img src="{{ asset('dist/img/donorsplash.png') }}" width="200px">
+            {% if (app.session.get('donor-id') is null) %}
+            <div class="container w-50 p-5 ">
+
+                {% for message in app.flashes('error') %}
+                    <div class="alert alert-danger">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+                {% for message in app.flashes('success') %}
+                    <div class="alert alert-success">
+                        {{ message|raw }}
+                    </div>
+                {% endfor %}
+                    {{ form_start(form , {'attr': {'class': 'form-signin'}}) }}
+                    <div class="form-group">
+                        {{ form_widget(form.Email) }}
+                    </div>
+                    <div class="form-group">
+                        {{ form_widget(form.Password) }}
+                    </div>
+                    <div class="form-group">
+                        {{ form_widget(form.SignIn) }}
+                        <a style="float: right" class="btn btn-secondary" href="{{ path('donor_new') }}" >Your are not registered? Sign Up</a>
+                    </div>
+
+
+                    {{ form_end(form) }}
+
+            </div>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}

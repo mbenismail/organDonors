@@ -47,6 +47,10 @@
                 <th>Weight</th>
                 <td>{{ donor.weight }}</td>
             </tr>
+            <tr>
+                <th>Has Donored</th>
+                <td>{{ (donor.hasDonored == 0)? "No" : "Yes" }}</td>
+            </tr>
         </tbody>
     </table>
 

@@ -39,6 +39,14 @@ class DonorType extends AbstractType
                 'A+' => 'A+',
                 'B+' => 'B+',
                 'AB+' => 'AB+']] )
+            ->add('password', RepeatedType::class, [
+                'type' => PasswordType::class,
+                'invalid_message' => 'The password fields must match.',
+                'options' => ['attr' => ['class' => 'password-field']],
+                'first_options'  => ['label' => 'Password'],
+                'required' =>true,
+                'second_options' => ['label' => 'Repeat Password'],
+            ])
             ;
         ;
     }

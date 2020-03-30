@@ -14,7 +14,6 @@ class MedicineRequestType extends AbstractType
     {
         $builder
 
-            ->add('donor' , TextType::class , [ 'mapped' => false, 'label' => 'Enter your donor ID : '])
         ;
     }
 

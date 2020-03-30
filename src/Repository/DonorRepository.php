@@ -55,7 +55,7 @@ class DonorRepository extends ServiceEntityRepository
                 break ;
         }
         return $this->createQueryBuilder('d')
-            ->andWhere('d.BloodType in '.$listblood.' and d.OrganDonation = :od')
+            ->andWhere('d.BloodType in '.$listblood.' and d.OrganDonation = :od and d.has_donored = 0')
             ->setParameter('od', $organ)
             ->getQuery()
             ->getResult()

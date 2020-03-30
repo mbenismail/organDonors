@@ -16,7 +16,7 @@ class DoctorRequestType extends AbstractType
     {
         $builder
             ->add('QuestionText' , TextareaType::class)
-            ->add('donor' , TextType::class , [ 'mapped' => false, 'label' => 'Please enter your donor id : '])
+
         ;
     }
 

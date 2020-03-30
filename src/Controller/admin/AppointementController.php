@@ -3,6 +3,7 @@
 namespace App\Controller\admin;
 
 use App\Entity\Appointement;
+use App\Entity\Donor;
 use App\Form\AppointementType;
 use App\Repository\AppointementRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -105,4 +106,25 @@ class AppointementController extends AbstractController
 
         return $this->redirectToRoute('appointement_index');
     }
+
+    /**
+     * @Route("/send_sms_mm/{id}", name="send_sms_mm", methods={"POST"})
+     */
+    public function send_sms_mm(Request $request, Donor $donor , Client $twilio): Response
+    {
+
+            dump('Good morning ' . $donor->getFirstName() . ' ' . $donor->getLastName() . ' : , We are Sorry to inform you that the results was not compatible') ;
+
+            $message = $twilio->messages->create(
+                '+966533571248', // Send text to this number
+                array(
+                    "from" => "+12076106607", //
+                    'body' => 'Good morning ' . $donor->getFirstName() . ' ' . $donor->getLastName() . ' : , We are Sorry to inform you that the results was not compatible '
+                )
+            );
+
+
+        return $this->redirectToRoute('appointement_index');
+    }
+
 }

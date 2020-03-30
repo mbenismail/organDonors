@@ -90,13 +90,25 @@ class Donor
 
     /**
      * @ORM\Column(type="integer")
+     * @Assert\Range(min="18" , max="60")
      */
     private $age;
 
     /**
      * @ORM\Column(type="integer")
+     * @Assert\Range(min="50" )
      */
     private $weight;
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $has_donored;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $password;
 
     public function __construct()
     {
@@ -104,7 +116,7 @@ class Donor
         $this->medicineRequests = new ArrayCollection();
         $this->doctorRequests = new ArrayCollection();
         $this->matchingTests = new ArrayCollection();
-
+        $this->has_donored = 0 ;
     }
 
     public function getId(): ?int
@@ -388,6 +400,18 @@ class Donor
     public function setWeight(int $weight): self
     {
         $this->weight = $weight;
+
+        return $this;
+    }
+
+    public function getHasDonored(): ?bool
+    {
+        return $this->has_donored;
+    }
+
+    public function setHasDonored(bool $has_donored): self
+    {
+        $this->has_donored = $has_donored;
 
         return $this;
     }

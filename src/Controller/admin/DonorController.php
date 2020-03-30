@@ -6,6 +6,8 @@ use App\Entity\Donor;
 use App\Form\DonorType;
 use App\Repository\DonorRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Form\Extension\Core\Type\ButtonType;
+use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\HttpFoundation\Request;
@@ -26,6 +28,62 @@ class DonorController extends AbstractController
             'donors' => $donorRepository->findAll(),
         ]);
     }
+
+    /**
+     * @Route("/logout", name="donor_logout", methods={"GET" , "POST"})
+     */
+    public function LogoutDonor(DonorRepository $donorRepository   , Request $request): Response
+    {
+
+            $this->get('session')->remove('donor-id');
+
+            return $this->redirectToRoute('donor_login');
+
+    }
+
+    /**
+     * @Route("/login", name="donor_login", methods={"GET" , "POST"})
+     */
+    public function LoginDonor(DonorRepository $donorRepository   , Request $request): Response
+    {
+        $form = $this->createFormBuilder()
+            ->add('Email', TextType::class , ['attr' => array(
+                'placeholder' => 'Email'
+            )])
+            ->add('Password', PasswordType::class , ['attr' => array(
+                'placeholder' => 'Password'
+            )])
+            ->add('SignIn', SubmitType::class , ['label' => 'Sign In'])
+            ->getForm();
+
+        $form->handleRequest($request );
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            // data is an array with "name", "email", and "message" keys
+
+            $entityManager = $this->getDoctrine()->getManager();
+            $isver =  $entityManager->getRepository(Donor::class)->findOneBy(['Email' => $form->get('Email')->getData()  ,'password' => md5($form->get('Password')->getData())]) ;
+
+            if ($isver) {
+
+                $this->get('session')->set('donor-id', $isver->getId());
+                $this->get('session')->set('firstname', $isver->getFirstName());
+                $this->get('session')->set('lastname', $isver->getLastName());
+
+            }else{
+                $this->addFlash(
+                    'error',
+                    'Please verify username and password'
+                );
+            }
+
+            return $this->redirectToRoute('donor_login');
+        }
+
+
+        return $this->render('donor/donor_signin.twig' , ['form' => $form->createView()]);
+    }
+
     /**
      * @Route("/confirmation", name="donor_confirm", methods={"GET","POST"})
      */
@@ -66,7 +124,7 @@ class DonorController extends AbstractController
                        'You have chosen to donor your organ after death , please fill the form <a target="_blank" href="files/formdonors.pdf" >Click here</a>'
                    );
                 }
-               return $this->redirectToRoute('app_login');
+               return $this->redirectToRoute('donor_login');
            }else{
 
                $this->addFlash(
@@ -90,6 +148,7 @@ class DonorController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
+            $donor->setPassword(md5($donor->getPassword())) ;
             $entityManager->persist($donor);
             $entityManager->flush();
             $message = (new \Swift_Message('Confirm your email'))

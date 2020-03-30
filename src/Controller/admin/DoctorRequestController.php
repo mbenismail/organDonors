@@ -39,7 +39,7 @@ class DoctorRequestController extends AbstractController
 
             $entityManager = $this->getDoctrine()->getManager();
 
-            $donordetails =  $entityManager->getRepository(Donor::class)->findOneBy(['id' => $form->get('donor')->getData()  ]) ;
+            $donordetails =  $entityManager->getRepository(Donor::class)->findOneBy(['id' => $this->get('session')->get('donor-id')  ]) ;
 
             if (!$donordetails) {
                 $this->addFlash(

@@ -22,7 +22,7 @@
         </thead>
         <tbody>
         {% for donor in donors %}
-            <tr>
+            <tr {{ (donor.hasDonored  == 1 )? "style='background-color: crimson;'"  :"" }}>
                 <td>{{ donor.id }}</td>
                 <td>{{ donor.firstName }}</td>
                 <td>{{ donor.lastName }}</td>

@@ -31,6 +31,11 @@
                         <input type="hidden" name="_token" value="{{ csrf_token("delete"~appointement.id) }}">
                         <button class="btn btn-danger">Delete</button>
                     </form>
+                    <form onsubmit="return confirm('Are you sure to inform the donor for  non compatible results ?')" action="{{ path('send_sms_mm' , {'id' : appointement.donor.id}) }}"  method="post" style="display: inline-block">
+                        <input type="hidden" value="POST" name="_method">
+                        <button class="btn btn-warning">Send SMS for Mis-matching results</button>
+                    </form>
+
                 </td>
             </tr>
         {% else %}

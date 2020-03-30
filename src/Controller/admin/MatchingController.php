@@ -58,6 +58,8 @@ class MatchingController extends AbstractController
             $matching->setOperationDateTime(new \DateTime('0000-00-00 00:00:00')) ;
             $matching->setPatient($entityManager->getRepository(Patient::class)->find($request->request->get('idpatient'))) ;
             $entityManager->persist($matching);
+            $donor->setHasDonored(1) ;
+            $entityManager->persist($donor);
             $entityManager->flush();
 
             $this->addFlash(
