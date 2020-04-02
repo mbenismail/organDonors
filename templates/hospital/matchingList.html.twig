@@ -29,7 +29,11 @@
                 <td>{{ (matchingtest.operationDateTime| date('d-m-Y H:i:s') != '30-11--0001 02:13:24' )? matchingtest.operationDateTime | date('d-m-Y H:i:s') : 'Not Configured yet' }}</td>
                 <td>
                     <button data-target="#modal-default{{ matchingtest.id }}" data-toggle="modal" class="btn btn-success">Send messages for operation</button>
-
+                    <form onsubmit="return confirm('Are you sure to delete the matching ?')" action="{{ path('matching_delete' , {'id' : matchingtest.id}) }}"  method="post" style="display: inline-block">
+                        <input type="hidden" value="DELETE" name="_method">
+                        <input type="hidden" name="_token" value="{{ csrf_token("delete"~matchingtest.id) }}">
+                        <button class="btn btn-danger">Delete</button>
+                    </form>
                     <div class="modal fade" id="modal-default{{ matchingtest.id }}">
                         <div class="modal-dialog">
                             <div class="modal-content">
@@ -52,6 +56,7 @@
 
                                     </div>
                                 </form>
+
                             </div>
                             <!-- /.modal-content -->
                         </div>

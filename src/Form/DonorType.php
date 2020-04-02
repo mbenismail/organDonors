@@ -5,6 +5,7 @@ namespace App\Form;
 use App\Entity\Donor;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -19,8 +20,12 @@ class DonorType extends AbstractType
             ->add('lastName')
             ->add('Email')
             ->add('Phone')
-            ->add('age')
-            ->add('weight')
+            ->add('age' , null ,  array(
+                'attr' => array('min' => 18, 'max' => 60)
+                ))
+            ->add('weight', null, array(
+                'attr' => array('min' => 50, 'max' => 90)
+            ))
             ->add('TypeDonation', ChoiceType::class , ['choices' => [
                 'Before Death' => '0' ,
                 'After Death' => '1'

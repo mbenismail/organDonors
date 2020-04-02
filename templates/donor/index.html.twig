@@ -28,7 +28,7 @@
                 <td>{{ donor.lastName }}</td>
                 <td>{{ donor.Email }}</td>
                 <td>{{ donor.Phone }}</td>
-                <td>{{ donor.TypeDonation ? 'Before Death' : 'After Death'}}</td>
+                <td>{{ ( donor.TypeDonation == 0 )? 'Before Death' : 'After Death'}}</td>
                 <td>{{ donor.organDonation }}</td>
                 <td>{{ donor.BloodType }}</td>
                 <td>

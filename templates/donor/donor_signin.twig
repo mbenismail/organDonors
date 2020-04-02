@@ -61,23 +61,12 @@
 
 
         <div class="row">
-            <nav class="col-lg-8 navbar-nav mr-auto navbar navbar-expand-lg navbar-light bg-light">
+            <nav class="col-lg-8 navbar-nav mr-auto navbar navbar-expand-lg navbar-light">
                 <div class="row navbar-nav" style="flex-wrap: nowrap!important;">
                     <div class="col-lg-2 nav-item">
-                    <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+
                     </div>
-                    {% if (app.session.get('donor-id')) %}
 
-                        <div class="col-lg-5 nav-item">
-                        <a class="nav-link" href="{{ path('medicine_request_new') }}">
-                            Medicine request
-                        </a></div>
-                            <div class="col-lg-5 nav-item">
-                        <a class="nav-link" href="{{ path('doctor_request_new') }}">
-                            Contact Doctor
-                        </a></div>
-
-                    {% endif %}
                 </div>
             </nav>
             <div class="col-lg-4">
@@ -101,17 +90,33 @@
 
 
         <div class="container text-center">
-            <p style="    font-size: 15px;
+            <img src="{{ asset('dist/img/donorsplash.png') }}" width="200px">
+            <p style="    font-size: 18px;
+            display: flex;
     text-align: center;
+    margin: auto;
     line-height: 25px;
     font-weight: bold;
-    border: 2px double white;
+    border: 2px double black;
+    width: 600px;
     padding: 3px;">
                 "Save with your organs" is a web application that helps and makes it easier for the donor to donate.<br>
                 For The patient who must quickly find a suitable donor.<br>
                 (Together we can build a bright and better future for many patients)<br>
             </p>
-            <img src="{{ asset('dist/img/donorsplash.png') }}" width="200px">
+            {% if (app.session.get('donor-id')) %}
+
+                <div class="row" style="width: 600px ; margin: auto">
+                    <a class="btn btn-dark m-2" href="{{ path('medicine_request_new') }}">
+                        Medicine request
+                    </a>
+                    <a class="btn btn-dark m-2" href="{{ path('doctor_request_new') }}">
+                        Contact Doctor
+                    </a>
+                </div>
+
+
+            {% endif %}
             {% if (app.session.get('donor-id') is null) %}
             <div class="container w-50 p-5 ">
 

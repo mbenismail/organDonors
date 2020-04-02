@@ -116,4 +116,20 @@ class MatchingController extends AbstractController
         ]);
     }
 
+
+    /**
+     * @Route("/{id}", name="matching_delete", methods={"DELETE"})
+     */
+    public function delete(Request $request, MatchingTest $matchingTest): Response
+    {
+        if ($this->isCsrfTokenValid('delete'.$matchingTest->getId(), $request->request->get('_token'))) {
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->remove($matchingTest);
+            $entityManager->flush();
+        }
+
+        return $this->redirectToRoute('ListMatching');
+    }
+
+
 }

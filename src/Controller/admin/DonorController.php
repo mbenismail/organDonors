@@ -56,6 +56,7 @@ class DonorController extends AbstractController
             ->add('SignIn', SubmitType::class , ['label' => 'Sign In'])
             ->getForm();
 
+
         $form->handleRequest($request );
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -121,7 +122,7 @@ class DonorController extends AbstractController
                if ($isver->getTypeDonation() == 1){
                    $this->addFlash(
                        'success',
-                       'You have chosen to donor your organ after death , please fill the form <a target="_blank" href="files/formdonors.pdf" >Click here</a>'
+                       'You have chosen to donor your organ after death , please fill the form <a target="_blank" href="http://127.0.0.1:8000/files/formdonors.pdf" >Click here</a>'
                    );
                 }
                return $this->redirectToRoute('donor_login');
