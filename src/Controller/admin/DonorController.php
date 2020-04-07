@@ -63,18 +63,18 @@ class DonorController extends AbstractController
             // data is an array with "name", "email", and "message" keys
 
             $entityManager = $this->getDoctrine()->getManager();
-            $isver =  $entityManager->getRepository(Donor::class)->findOneBy(['Email' => $form->get('Email')->getData()  ,'password' => md5($form->get('Password')->getData())]) ;
+            $isver =  $entityManager->getRepository(Donor::class)->findOneBy(['Email' => $form->get('Email')->getData()  ,'password' => md5($form->get('Password')->getData()) , 'TypeDonation' => 0] ) ;
 
             if ($isver) {
 
                 $this->get('session')->set('donor-id', $isver->getId());
                 $this->get('session')->set('firstname', $isver->getFirstName());
                 $this->get('session')->set('lastname', $isver->getLastName());
-
+                $this->get('session')->set('hasdonored', $isver->getHasDonored());
             }else{
                 $this->addFlash(
                     'error',
-                    'Please verify username and password'
+                    'Please verify username and password or you have chosen to donate after death'
                 );
             }
 

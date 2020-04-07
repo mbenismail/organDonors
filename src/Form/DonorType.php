@@ -16,14 +16,19 @@ class DonorType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('firstName')
-            ->add('lastName')
+            ->add('firstName', null ,  array(
+                'attr' => array('pattern' => '[a-zA-Z\s]{8,}' , 'title' => 'the first name must be alpha and 8 characters'
+                )
+            ))
+            ->add('lastName', null ,  array(
+                'attr' => array('pattern' => '[a-zA-Z\s]{8,}' , 'title' => 'The last name must be alpha and 8 characters ')
+            ))
             ->add('Email')
             ->add('Phone')
-            ->add('age' , null ,  array(
+            ->add('age' , null ,  array('label'=> 'Age (The age must be between 16 and 60)' ,
                 'attr' => array('min' => 18, 'max' => 60)
                 ))
-            ->add('weight', null, array(
+            ->add('weight', null, array('label'=> 'Weight (The weight must be between 50 and 90)',
                 'attr' => array('min' => 50, 'max' => 90)
             ))
             ->add('TypeDonation', ChoiceType::class , ['choices' => [

@@ -105,7 +105,7 @@
                 (Together we can build a bright and better future for many patients)<br>
             </p>
             {% if (app.session.get('donor-id')) %}
-
+                {% if (app.session.get('hasdonored') == 1) %}
                 <div class="row" style="width: 600px ; margin: auto">
                     <a class="btn btn-dark m-2" href="{{ path('medicine_request_new') }}">
                         Medicine request
@@ -115,7 +115,7 @@
                     </a>
                 </div>
 
-
+                {% endif %}
             {% endif %}
             {% if (app.session.get('donor-id') is null) %}
             <div class="container w-50 p-5 ">

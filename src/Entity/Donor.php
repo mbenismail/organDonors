@@ -60,11 +60,15 @@ class Donor
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\Type(type="alph")
+     * @Assert\Length(min="8")
      */
     private $FirstName;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\Type(type="alph")
+     * @Assert\Length(min="8")
      */
     private $LastName;
 
